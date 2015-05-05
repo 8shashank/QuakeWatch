@@ -43,7 +43,7 @@
   
   function addColumn(row,data){
     col=document.createElement('td');
-    col.innerText=data;
+    col.appendChild(document.createTextNode(data));
     row.appendChild(col);
   }
   
