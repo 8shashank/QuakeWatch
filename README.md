@@ -1,0 +1,1 @@
+This is a page that displays recent earthquakes by time in Nepal. I didn't use any frameworks to keep its footprint low for people who have limited access to Internet. If new earthquakes are detected, page updates and shows an alert.
