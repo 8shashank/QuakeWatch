@@ -3,12 +3,14 @@
 <head>
   <title>Nepal Earthquake Watch</title>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <meta http-equiv=’cache-control’ content=’no-cache’>
+  <meta http-equiv=’expires’ content=’0′>
+  <meta http-equiv=’pragma’ content=’no-cache’>
 </head>
 
 <body>
 <h1>Nepal Earthquake Watch</h1>
 <h3 id="loading">Loading data</h3>
-
 <p id="notice">This page will update automatically in 5 minutes.</p>
 <div id="tableContainer">
   <table id="quake_table" class="table">
@@ -28,9 +30,12 @@
   var interval=5;   // in minutes
   var quake_table=document.getElementById('quake_table');
   var quake_tbody=quake_table.getElementsByTagName('tbody')[0];
+  var head= document.getElementsByTagName('head')[0];
   
-  var init_url="http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-04-25&orderby=time"
+  var url="http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-04-25&orderby=time";
+  var init_url=url+"&callback=initTable"
   var loading=document.getElementById('loading');
+  var count=0;
   
   function addRow(quake_info){
     row=document.createElement('tr');
@@ -57,8 +62,7 @@
     drawTable();
   }
   
-  function addQuakes(page){
-    init_quakes=JSON.parse(page);
+  function addQuakes(init_quakes){
     var features=init_quakes["features"];
     for(var i=0;i<features.length;i++){
       var id=features[i]["id"];
@@ -88,16 +92,20 @@
     loading.innerText="Please wait, loading data..";
   }
   
-  function getPage(url,callback){
-    var httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = function() { 
-            if (httpRequest.readyState == 4 && httpRequest.status == 200)
-                callback(httpRequest.responseText);
-        }
-
-        httpRequest.open( "GET", url, true );            
-        httpRequest.send( null );
+  function getPage(url){
+    count++;
+    oldscript=document.getElementById('usgs_script');
+    if (oldscript!==null){
+      console.log("Old script detected. Deleting..");
+      head.removeChild(oldscript);
+    }
+    var script=document.createElement('script');
+    script.type = "text/javascript";
+    script.src = init_url;
+    script.id="usgs_script";
+    head.appendChild(script);
   }
+
   //Time since code, courtesy of Sky Sanders
   function timeSince(date) {
       var seconds = Math.floor((new Date() - date) / 1000);
@@ -134,11 +142,11 @@
     notice.style.visibility="hidden";
     },3000);
     
-  getPage(init_url,initTable);
+  getPage(init_url);
   
   setInterval(function(){
     console.log("Updated page");
-    getPage(init_url,initTable)
+    getPage(init_url)
     },interval*1000*60);  
 
 </script>
