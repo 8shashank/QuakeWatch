@@ -36,7 +36,7 @@
     row=document.createElement('tr');
     addColumn(row,quake_info["mag"]);
     addColumn(row,quake_info["place"]);
-    var time_since=timeSince(new Date(parseInt(quake_info["time"])))+"ago";
+    var time_since=timeSince(new Date(parseInt(quake_info["time"])))+" ago";
     addColumn(row,time_since);
     quake_tbody.appendChild(row);
   }
