@@ -33,8 +33,10 @@
   var loading=document.getElementById('loading');
   
   function addRow(quake_info){
-    row=document.createElement('tr');
-    addColumn(row,quake_info["mag"]);
+    var row=document.createElement('tr');
+    var mag_col=addColumn(row,quake_info["mag"]);
+    var mag=parseInt(quake_info["mag"]);
+    mag_col.style.backgroundColor=quake_info["alert_"];
     addColumn(row,quake_info["place"]);
     var time_since=timeSince(new Date(parseInt(quake_info["time"])))+"ago";
     addColumn(row,time_since);
@@ -45,6 +47,7 @@
     col=document.createElement('td');
     col.innerText=data;
     row.appendChild(col);
+    return col;
   }
   
   function drawTable(){
@@ -72,7 +75,7 @@
       if (end_idx!=-1){
         begin_idx=place.indexOf(" of ")+4;
         place=place.substring(begin_idx,end_idx);
-        quakes.push({id:id,mag:prop["mag"],place:place,time:prop["time"]});
+        quakes.push({id:id,alert_:prop["alert"],mag:prop["mag"],place:place,time:prop["time"]});
       }
     }
     show();
