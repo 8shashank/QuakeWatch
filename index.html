@@ -28,6 +28,10 @@
   var interval=5;   // in minutes
   var quake_table=document.getElementById('quake_table');
   var quake_tbody=quake_table.getElementsByTagName('tbody')[0];
+  var colors={		//ignore green
+	"yellow":"#F4FA58",
+	"orange":"#FFBF00",
+	"red":"#FF0000"};
   
   var init_url="http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-04-25&orderby=time"
   var loading=document.getElementById('loading');
@@ -35,8 +39,9 @@
   function addRow(quake_info){
     var row=document.createElement('tr');
     var mag_col=addColumn(row,quake_info["mag"]);
-    var mag=parseInt(quake_info["mag"]);
-    mag_col.style.backgroundColor=quake_info["alert_"];
+    if (colors[quake_info["alert_"]]!==undefined){
+		mag_col.style.background=colors[quake_info["alert_"]];
+	}
     addColumn(row,quake_info["place"]);
     var time_since=timeSince(new Date(parseInt(quake_info["time"])))+"ago";
     addColumn(row,time_since);
