@@ -1,17 +1,25 @@
 <html>
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Track earthquakes happening in Nepal">
+  <meta name="author" content="Shashank Sharma">
   <title>Nepal Earthquake Watch</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
 <h1>Nepal Earthquake Watch</h1>
-<h3 id="loading">Loading data</h3>
 
-<p id="notice">This page will update automatically in 5 minutes.</p>
+<select id="duration">
+  <option value="day">Last day</option>
+  <option value="week">Last week</option>
+  <option value="all">All since April 25,2015</option>
+</select>
+
+<p>There have been <span id="count"></span> <span id="howlong"></span></p>
+
 <div id="tableContainer">
-  <table id="quake_table" class="table">
+  <table id="quake_table" class="responsive">
   <thead>
   <tr>
     <th>Magnitude</th>
